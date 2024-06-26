@@ -1,0 +1,29 @@
+
+
+services:
+  ros2_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    privileged: true
+    network_mode: "host" 
+    tty: true
+    environment:
+    - DISPLAY=$DISPLAY
+    user: 1000:1000
+    # command to get the right group number: getent group render | cut -d: -f3
+    group_add:
+      - "105"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev:/dev
+      - /sys:/sys
+      - /etc/udev:/etc/udev
+      - ./src:/home/ros2-on-intel/ros2_ws/src
+      - ./build:/home/ros2-on-intel/ros2_ws/build
+      - ./install:/home/ros2-on-intel/ros2_ws/install
+      - ./log:/home/ros2-on-intel/ros2_ws/log
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+
+    command: bash -c " source /opt/ros/humble/setup.bash  && /bin/bash "
