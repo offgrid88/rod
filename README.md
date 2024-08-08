@@ -1,7 +1,3 @@
-Here's a README template for your ROD: ROS 2 On Docker project. This template includes sections on how to use the project, how to contribute, and a TODO list for future enhancements:
-
----
-
 # ROD: ROS 2 On Docker
 
 Welcome to ROD (ROS 2 On Docker), a streamlined environment for developing and testing ROS 2 applications using Docker. This setup allows for easy configuration and deployment of ROS 2 applications across various systems, ensuring consistency in development and testing environments.
@@ -15,7 +11,7 @@ Welcome to ROD (ROS 2 On Docker), a streamlined environment for developing and t
 ### Setup
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/offgrid88/rod
    cd ROD
    ```
 
@@ -46,7 +42,7 @@ Contributions are welcome! Here's how you can contribute:
 
 2. **Clone your fork**:
    ```bash
-   git clone <your-fork-url>
+   git clone https://github.com/ROS-Tunisia-Users-Group/rod
    cd ROD
    ```
 
