@@ -22,10 +22,10 @@ Welcome to ROD (ROS 2 On Docker), a streamlined environment for developing and t
    Follow the on-screen instructions to build the Docker environment. 
 
 3. **Run the Docker environment**:
-   - After building, you can run the Docker environment directly from the ncurses menu by selecting "Run Docker Compose".
+   - After building, you can run the Docker environment directly from the ncurses menu by selecting "Run ROD".
 
 4. **Interact with the Docker container**:
-   - Access the interactive shell inside the Docker container through the ncurses menu by selecting "Execute Interactive Shell in Docker".
+   - Access the interactive shell inside the Docker container through the ncurses menu by selecting "Execute Interactive Shell in ROD".
 
 ### Directory Structure
 - `src/`: ROS 2 source files and packages.
