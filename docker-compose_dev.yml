@@ -2,6 +2,7 @@
 
 services:
   ros2_dev:
+    container_name: rod
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -13,7 +14,7 @@ services:
     user: 1000:1000
     # command to get the right group number: getent group render | cut -d: -f3
     group_add:
-      - "105"
+      - "${RENDER_GROUP_ID}"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /dev:/dev

@@ -1,6 +1,6 @@
 FROM osrf/ros:humble-desktop AS base
 
-ARG USERNAME=ros2-on-intel
+ARG USERNAME=ROD
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 ARG DEBIAN_FRONTEND=noninteractive
@@ -17,7 +17,9 @@ ENV QT_X11_NO_MITSHM 1
 
 
 ENV PATH /usr/lib/ccache:$QT_DESKTOP/bin:$PATH
-RUN apt-get update && apt-get -y install  libnss3 libxcomposite1 libxdamage1 libxrandr2 libxtst6
+RUN apt-get update && apt-get -y install  libnss3 \
+	libxcomposite1 libxdamage1 libxrandr2 libxtst6 \
+	&& rm -rf /var/lib/apt/lists/*
 # libxss1 libasound2 libatk-bridge2.0-0 libatspi2.0-0  libvpx5 libevent-2.1-6 libicu60 -y
 
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
@@ -66,7 +68,8 @@ RUN apt-get update && apt-get install -y \
     libglu1-mesa-dev libxrender-dev \
     libxi-dev libxkbcommon-dev libxkbcommon-x11-dev \
     libxkbcommon-x11-0 libxcb-xinerama0 libxcb-* \
-    libxcb-xinerama0-dev libxkbcommon-x11-dev
+    libxcb-xinerama0-dev libxkbcommon-x11-dev \
+	&& rm -rf /var/lib/apt/lists/*
 
 # Install necessary packages for hardware access
 RUN apt-get update && apt-get install -y \
@@ -83,13 +86,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 
-RUN groupadd --gid $USER_GID $USERNAME \
-  && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
-  && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-  && chmod 0440 /etc/sudoers.d/$USERNAME \
-  && echo "\n# Added by ros2-on-intel Dockerfile:" >> /home/$USERNAME/.bashrc \
-  && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
-RUN usermod -a -G dialout $USERNAME
+RUN groupadd --gid "$USER_GID" "$USERNAME" \
+  && useradd -s /bin/bash --uid "$USER_UID" --gid "$USER_GID" -m "$USERNAME" \
+  && echo "$USERNAME" ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/"$USERNAME" \
+  && chmod 0440 /etc/sudoers.d/"$USERNAME" \
+  && echo "\n# Added by ROD Dockerfile:" >> /home/"$USERNAME"/.bashrc \
+  && echo "source /usr/share/bash-completion/completions/git" >> /home/"$USERNAME"/.bashrc
+RUN usermod -a -G dialout "$USERNAME"
 # Switch to our new user
 USER $USERNAME
 ENV USER=$USERNAME
@@ -97,11 +100,11 @@ ENV USER=$USERNAME
 
 
 # Create a workspace directory
-RUN mkdir -p /home/$USERNAME/ros2_ws/src
+RUN mkdir -p /home/"$USERNAME"/ros2_ws/src
 RUN source /opt/ros/humble/setup.bash
 
-RUN echo "source /opt/ros/humble/setup.bash" >> /home/$USERNAME/.bashrc
-RUN echo "source /home/ros2-on-intel/ros2_ws/install/setup.bash" >> /home/$USERNAME/.bashrc
+RUN echo "source /opt/ros/humble/setup.bash" >> /home/"$USERNAME"/.bashrc
+RUN echo "source /home/ROD/ros2_ws/install/setup.bash" >> /home/"$USERNAME"/.bashrc
 # Copy your ROS 2 packages into the container
 #COPY ./src /$USERNAME/ros2_ws/src
 
@@ -114,4 +117,4 @@ RUN source /opt/ros/humble/setup.bash && \
 
 
 RUN source /opt/ros/humble/setup.bash
-RUN source /home/ros2-on-intel/ros2_ws/install/setup.bash
+RUN source /home/ROD/ros2_ws/install/setup.bash
